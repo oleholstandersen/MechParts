@@ -8,3 +8,4 @@ Various basic mechanical parts in OpenSCAD, including:
 * Linear rails
 * Timing belts
 * Lead screws
+* Square alu beams (e.g. 2020 v-slot)
