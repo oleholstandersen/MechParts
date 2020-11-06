@@ -1,6 +1,6 @@
 module beam_profile(series, size)
 {
-    import(str("SquareBeamsDXF/opens    ",series,"-",size,".dxf"));
+    import(str("SquareBeamsDXF/",series,"-",size,".dxf"));
 }
 
 module beam(series = "vslot", size = 2020, length = 200)
