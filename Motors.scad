@@ -94,6 +94,54 @@ module nema_17(l = 42,lower_axle_l = 0)
     }
 }
 
+module 28byj48_step_motor_axle()
+{
+    difference() {
+        cylinder(h=8.5,d=5);
+        for (a=[0,180]) {
+            rotate(a=a) {
+                translate([-2.5,1.5,2]) {
+                    cube([5,1,6.5]);
+                }
+            }
+        }
+    }
+}
+
+module 28byj48_step_motor() {
+    color("gray")
+    {
+        render()
+        {
+            translate([0,-8,-19]) {cylinder(h=19,d=28);}
+            translate([-7.3,-17-8,-16.2]) {
+                cube([14.6,17,16.2]);
+            }
+            translate([0,-8,-0.5]) {
+                #difference() {
+                    union() {
+                        cube([35,7,1],true);
+                        for (i=[-1,1]) {
+                            translate([i*35/2,0,0]) {
+                                cylinder(h=1,d=7,center = true);
+                            }
+                        }
+                    }
+                    for (i=[-1,1]) {
+                        translate([i*35/2,0,0]) {
+                            cylinder(h=1,d=4.2,center = true);
+                        }
+                    }
+                }
+            }
+            cylinder(h=1.5,d=9);
+            translate([0,0,1.5]) {28byj48_step_motor_axle();}
+        }
+    }
+}
+
+28byj48_step_motor($fn = 36);
+
 module mst_motor_coupling(D1 = 5, D2 = 8, A = 20, W = 25, F = 3, M = 3, L = 7.5)
 {
     render()
@@ -119,4 +167,4 @@ module mst_motor_coupling(D1 = 5, D2 = 8, A = 20, W = 25, F = 3, M = 3, L = 7.5)
     }
 }
 
-mst_motor_coupling($fn = 36);
+*mst_motor_coupling($fn = 36);
