@@ -36,30 +36,33 @@ module linear_bearing(type)
     B = lb_B(type);
     W = lb_W(type);
     D1 = lb_D1(type);
-    render()
+    color("gray")
     {
-        translate([0,0,-L/2])
+        render()
         {
-            difference()
+            translate([0,0,-L/2])
             {
-                linear_extrude(height = L) 
+                difference()
                 {
-                    difference()
+                    linear_extrude(height = L) 
                     {
-                        circle(d = D);
-                        circle(d = d);
-                    }
-                }
-                for (z = [(L-B)/2,(L+B)/2-W])
-                {
-                    translate([0,0,z]) 
-                    {
-                        linear_extrude(W)
+                        difference()
                         {
-                            difference()
+                            circle(d = D);
+                            circle(d = d);
+                        }
+                    }
+                    for (z = [(L-B)/2,(L+B)/2-W])
+                    {
+                        translate([0,0,z]) 
+                        {
+                            linear_extrude(W)
                             {
-                                circle(d = D);
-                                circle(d = D1);
+                                difference()
+                                {
+                                    circle(d = D);
+                                    circle(d = D1);
+                                }
                             }
                         }
                     }
