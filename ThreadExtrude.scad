@@ -60,20 +60,32 @@ module thread_segment(threadProfilePolygon = metric_profile(), pitch = 2)
     polyhedron(faces = faces, points = points);    
 }
 
-*thread_segment($fn = 72);
+thread_segment($fn = 72);
 
 module thread_extrude(threadProfilePolygon = metric_profile(), pitch = 1.5, angle = 720)
 {
-    fn = fragments();
-    segmentCount = ceil(fn*angle/360);
-    assert(segmentCount > 0, "Angle must be positive")
-    for (i = [0:segmentCount-1])
+    if (angle > 360)
     {
-        rotate(a = i*360/fn) 
+        thread_extrude(threadProfilePolygon,pitch,360);
+        translate([0,0,pitch]) {thread_extrude(threadProfilePolygon,pitch,angle-360);}
+    }
+    else
+    {
+        render()
         {
-            translate([0,0,i*pitch/fn]) 
+            fn = fragments();
+            segmentCount = ceil(fn*angle/360);
+            assert(segmentCount > 0, "Angle must be positive")
+
+            for (i = [0:segmentCount-1])
             {
-                thread_segment(threadProfilePolygon = threadProfilePolygon, pitch = pitch);
+                rotate(a = i*360/fn) 
+                {
+                    translate([0,0,i*pitch/fn]) 
+                    {
+                        thread_segment(threadProfilePolygon = threadProfilePolygon, pitch = pitch);
+                    }
+                }
             }
         }
     }
@@ -101,7 +113,7 @@ module bspp_thread(iSize = 1/4, h = 20)
     }
 }
 
-*thread_extrude($fn = 36, angle = 3600);
+thread_extrude($fn = 36, angle = 3600);
 
 *metric_thread(h = 3, $fn = 36);
 
@@ -114,7 +126,7 @@ module bspp_thread(iSize = 1/4, h = 20)
 }
 
 pitch = 1.5;
-for (i = [0:3])
+*for (i = [0:3])
 {
     translate([0,0,i*pitch]) {render() {thread_extrude(pitch = pitch, angle = 360, $fn = 72);}}
 }
