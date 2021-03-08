@@ -60,7 +60,7 @@ module thread_segment(threadProfilePolygon = metric_profile(), pitch = 2)
     polyhedron(faces = faces, points = points);    
 }
 
-thread_segment($fn = 72);
+*thread_segment($fn = 72);
 
 module thread_extrude(threadProfilePolygon = metric_profile(), pitch = 1.5, angle = 720)
 {
@@ -113,7 +113,44 @@ module bspp_thread(iSize = 1/4, h = 20)
     }
 }
 
-thread_extrude($fn = 36, angle = 3600);
+t8d2 = tan(30)/2;
+t8d1 = 1/2-t8d2;
+
+function t8_profile()= [
+    [3,t8d1],
+    [4,t8d1+2*t8d2],
+    [4,3*t8d1+2*t8d2],
+    [3,3*t8d1+4*t8d2]];
+
+
+*translate([-3,0]) {polygon(t8_profile());}
+
+module t8x8_thread(h = 20)
+{
+    assert(h > 0, "Height must be positive");
+    pitch = 8;
+    intersection()
+    {
+        for (a = [0:90:270])
+        {
+            rotate(a)
+            {
+                translate([0,0,-pitch]) {thread_extrude(t8_profile(), pitch, 360*h/pitch+360);}
+            }
+        }
+        linear_extrude(h)
+        {
+            square([9,9],true);
+        }
+    }
+}
+
+cylinder(d = 6, h = 20, $fn = 36);
+t8x8_thread($fn = 36);
+
+
+
+*thread_extrude($fn = 36, angle = 3600);
 
 *metric_thread(h = 3, $fn = 36);
 
